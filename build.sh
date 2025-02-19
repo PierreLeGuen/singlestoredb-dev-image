@@ -11,10 +11,11 @@ if [ -z "${BOOTSTRAP_LICENSE-}" ]; then
     exit 1
 fi
 
-IMAGE_REPO=ghcr.io/singlestore-labs
+IMAGE_REPO=plgnai
 IMAGE_NAME=singlestoredb-dev
 
-docker build \
+docker buildx build \
+    --platform linux/amd64 --load --push \
     -t "${IMAGE_REPO}/${IMAGE_NAME}:local" \
     --build-arg BOOTSTRAP_LICENSE=${BOOTSTRAP_LICENSE} \
     --build-arg CONFIG="$(jq 'del(.kai)' config.json | tr '\n' ' ')" \
